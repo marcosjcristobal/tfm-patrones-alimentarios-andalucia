@@ -1,0 +1,21 @@
+﻿variable_lbl,categoria,n_total,peso_total,Patrón equilibrado con tendencia saludable,Patrón tradicional,Patrón con tendencia poco saludable
+Sexo,Hombre,4520,4724756.8,31.4,27.8,40.9
+Sexo,Mujer,1833,1978591.1,35.6,26.3,38.1
+Nivel educativo,Bajo,4422,4654319.0,33.4,27.9,38.6
+Nivel educativo,Medio,1339,1416566.7,29.5,25.4,45.1
+Nivel educativo,Universitario,563,602023.6,33.8,27.1,39.1
+Situación económica del hogar,Dificultad,2188,2316160.6,29.4,29.3,41.2
+Situación económica del hogar,Alguna dificultad,1769,1847487.0,33.9,25.7,40.4
+Situación económica del hogar,Alguna facilidad,1465,1539483.3,32.0,27.1,40.9
+Situación económica del hogar,Facilidad,893,960435.9,39.1,25.9,35.0
+Posición ocupacional agrupada,Alta/profesional-directiva,617,660306.0,38.8,27.5,33.7
+Posición ocupacional agrupada,Intermedia/no manual y servicios,2034,2138176.6,29.9,26.8,43.4
+Posición ocupacional agrupada,Manual/agraria/elemental,3652,3850720.6,33.1,27.6,39.4
+Provincia,Almería,519,556103.9,43.4,18.0,38.7
+Provincia,Cádiz,931,994239.2,17.4,33.5,49.1
+Provincia,Córdoba,650,638701.7,29.8,32.8,37.4
+Provincia,Granada,702,746200.0,48.0,22.6,29.4
+Provincia,Huelva,429,423614.9,27.6,34.3,38.0
+Provincia,Jaén,513,527243.3,56.1,18.3,25.6
+Provincia,Málaga,1158,1269924.0,35.8,28.2,36.0
+Provincia,Sevilla,1451,1547320.9,23.0,27.2,49.7

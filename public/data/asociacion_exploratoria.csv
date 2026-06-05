@@ -1,0 +1,6 @@
+﻿Variable,n,Categorías,Patrones,Chi2 ponderado normalizado,p,V de Cramer
+Sexo,6353,2,3,11.1,"0,004",0.042
+Nivel educativo,6324,3,3,18.57,"<0,001",0.038
+Situación económica del hogar,6315,4,3,32.26,"<0,001",0.051
+Posición ocupacional agrupada,6303,3,3,24.72,"<0,001",0.044
+Provincia,6353,8,3,442.73,"<0,001",0.187

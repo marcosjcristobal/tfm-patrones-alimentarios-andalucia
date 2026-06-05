@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Visualización interactiva de patrones alimentarios y desigualdades sociales en población adulta andaluza a partir de la Encuesta Andaluza de Salud 2016."
+  />
+  <title>Patrones alimentarios y desigualdades sociales en Andalucía</title>
+  
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23145d58'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='Arial' font-size='22' font-weight='700' fill='white'%3ETFM%3C/text%3E%3C/svg%3E"
+  />
+  <link rel="preconnect" href="https://cdn.plot.ly" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header" aria-label="Cabecera principal">
+    <nav class="nav shell" aria-label="Navegación principal">
+      <a class="brand" href="#inicio" aria-label="Volver al inicio">
+        <span class="brand-mark" aria-hidden="true">TFM</span>
+        <span class="brand-text">EAS 2016 · Andalucía</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+        <span class="sr-only">Abrir menú de navegación</span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div id="nav-links" class="nav-links">
+        <a href="#hallazgos">Hallazgos</a>
+        <a href="#patrones">Patrones</a>
+        <a href="#desigualdades">Desigualdades sociales</a>
+        <a href="#modelos">Modelos</a>
+        <a href="#metodologia">Metodología</a>
+        <a href="#conclusiones">Conclusiones</a>
+        <a href="#datos">Datos</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section id="inicio" class="hero section-pad">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Trabajo Final de Máster · Visualización de resultados</p>
+
+          <h1>Patrones alimentarios y desigualdades sociales en Andalucía</h1>
+
+          <p class="hero-subtitle">
+            Análisis exploratorio a partir de la Encuesta Andaluza de Salud 2016
+          </p>
+
+          <p class="hero-text">
+            Esta web resume los patrones alimentarios identificados en población adulta andaluza
+            y su relación con dimensiones sociales, económicas, ocupacionales y territoriales.
+            El objetivo es facilitar una lectura clara de los resultados principales, manteniendo
+            la cautela metodológica propia de un análisis transversal y exploratorio.
+          </p>
+
+          <div class="hero-actions" aria-label="Accesos rápidos">
+            <a class="btn primary" href="#hallazgos">Ver hallazgos</a>
+            <a class="btn" href="#patrones">Ver patrones</a>
+            <a class="btn" href="#desigualdades">Explorar desigualdades</a>
+            <a class="btn" href="#modelos">Consultar modelos</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Indicadores principales">
+          <div class="kpi-card accent-teal">
+            <span class="kpi-value">6.353</span>
+            <span class="kpi-label">individuos</span>
+          </div>
+
+          <div class="kpi-card accent-blue">
+            <span class="kpi-value">12</span>
+            <span class="kpi-label">grupos alimentarios</span>
+          </div>
+
+          <div class="kpi-card accent-amber">
+            <span class="kpi-value">3</span>
+            <span class="kpi-label">patrones identificados</span>
+          </div>
+
+          <div class="kpi-card accent-coral">
+            <span class="kpi-value">EAS</span>
+            <span class="kpi-label">Encuesta Andaluza de Salud 2016</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="status-section" aria-label="Estado de carga de datos">
+      <div class="shell">
+        <div id="data-status" class="data-status" role="status" aria-live="polite">
+          Cargando archivos de datos disponibles…
+        </div>
+      </div>
+    </section>
+
+    <section class="technical-summary" aria-label="Ficha técnica del análisis">
+      <div class="shell">
+        <div class="technical-grid">
+          <article class="technical-card">
+            <span class="technical-label">Fuente</span>
+            <strong>Encuesta Andaluza de Salud 2016</strong>
+            <p>Microdatos de población adulta residente en Andalucía.</p>
+          </article>
+
+          <article class="technical-card">
+            <span class="technical-label">Muestra analítica</span>
+            <strong>6.353 individuos</strong>
+            <p>Casos adultos con información válida para la matriz alimentaria utilizada.</p>
+          </article>
+
+          <article class="technical-card">
+            <span class="technical-label">Clasificación</span>
+            <strong>KMeans sobre 12 grupos</strong>
+            <p>El PCA se emplea solo como apoyo exploratorio, no como método final de asignación.</p>
+          </article>
+
+          <article class="technical-card">
+            <span class="technical-label">Asociación social</span>
+            <strong>Poisson robusto</strong>
+            <p>Modelos independientes por dimensión social, ajustados por sexo y con pesos normalizados.</p>
+          </article>
+        </div>
+        <div class="weighting-note" aria-label="Nota sobre ponderación muestral">
+          <strong>Nota sobre ponderación:</strong>
+          los porcentajes descriptivos se presentan a partir de las estimaciones ponderadas disponibles. En los modelos de asociación se utilizaron pesos muestrales normalizados, junto con errores estándar robustos.
+        </div>
+      </div>
+    </section>
+
+    <section id="hallazgos" class="section-pad section-compact" aria-label="Hallazgos principales">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">Lectura principal</p>
+
+          <h2>Qué muestra el análisis</h2>
+
+          <p>
+            La visualización está planteada como una lectura guiada de los resultados: primero
+            identifica los patrones alimentarios, después compara su distribución social y
+            territorial, y finalmente resume las asociaciones estimadas mediante modelos de
+            Poisson robustos.
+          </p>
+        </div>
+
+        <div class="insight-grid">
+          <article class="insight-card">
+            <span class="insight-number">1</span>
+            <h3>Predomina el patrón poco saludable</h3>
+            <p>
+              El patrón con tendencia poco saludable es el grupo de mayor peso relativo en la
+              muestra analítica adulta.
+            </p>
+          </article>
+
+          <article class="insight-card">
+            <span class="insight-number">2</span>
+            <h3>Las diferencias por sexo son reducidas</h3>
+            <p>
+              La distribución por sexo no concentra la lectura principal de desigualdad, al
+              mostrar contrastes porcentuales pequeños.
+            </p>
+          </article>
+
+          <article class="insight-card">
+            <span class="insight-number">3</span>
+            <h3>Economía y ocupación pesan más</h3>
+            <p>
+              La situación económica del hogar y la posición ocupacional ofrecen las asociaciones
+              más consistentes en los modelos.
+            </p>
+          </article>
+
+          <article class="insight-card">
+            <span class="insight-number">4</span>
+            <h3>La educación no sigue un gradiente simple</h3>
+            <p>
+              El nivel educativo debe interpretarse con cautela, sin forzar una lectura lineal
+              entre categorías.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="patrones" class="section-pad section-soft">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">01 · Clasificación empírica</p>
+
+          <h2>Patrones alimentarios</h2>
+
+          <p>
+            El método final de clasificación utiliza KMeans directamente sobre una matriz de
+            12 grupos alimentarios. El PCA se considera una herramienta exploratoria de apoyo,
+            no el procedimiento final para asignar patrones.
+          </p>
+        </div>
+
+        <div class="grid-two align-start">
+          <article class="chart-card">
+            <div class="card-heading">
+              <div>
+                <h3>Distribución de los patrones</h3>
+                <p>Porcentaje de población adulta en cada patrón.</p>
+              </div>
+
+              <span class="data-badge" id="pattern-source-badge">Fallback</span>
+            </div>
+
+            <div
+              id="pattern-distribution-chart"
+              class="chart"
+              role="img"
+              aria-label="Distribución porcentual de los patrones alimentarios"
+            ></div>
+          </article>
+
+          <div class="pattern-cards" aria-label="Descripción cualitativa de patrones">
+            <article class="pattern-card balanced">
+              <span class="pattern-pill" data-pattern-percent="balanced">32,6 %</span>
+              <h3>Patrón equilibrado con tendencia saludable</h3>
+              <p>
+                Baja presencia de comida rápida, dulces, bebidas azucaradas y
+                embutidos/fiambres; alta presencia de fruta y verduras.
+              </p>
+            </article>
+
+            <article class="pattern-card mixed">
+              <span class="pattern-pill" data-pattern-percent="mixed">27,3 %</span>
+              <h3>Patrón mixto</h3>
+              <p>
+                Alta presencia de fruta, verduras, legumbres, pescado y carne, pero también
+                embutidos/fiambres. No debe interpretarse como plenamente saludable.
+              </p>
+            </article>
+
+            <article class="pattern-card unhealthy">
+              <span class="pattern-pill" data-pattern-percent="unhealthy">40,0 %</span>
+              <h3>Patrón con tendencia poco saludable</h3>
+              <p>
+                Mayor presencia relativa de dulces, bebidas azucaradas, comida rápida, carne
+                y embutidos/fiambres.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <article class="chart-card wide-card mt-xl">
+          <div class="card-heading">
+            <div>
+              <h3>Consumo alto por grupo alimentario y patrón</h3>
+              <p>
+                Heatmap de porcentajes. Si no se encuentra el CSV real, se muestran datos de
+                ejemplo claramente identificados.
+              </p>
+            </div>
+
+            <span class="data-badge" id="heatmap-source-badge">Fallback</span>
+          </div>
+
+          <div
+            id="high-consumption-heatmap"
+            class="chart chart-tall"
+            role="img"
+            aria-label="Heatmap de consumo alto por grupo alimentario y patrón"
+          ></div>
+        </article>
+        <article class="chart-card wide-card mt-xl">
+          <div class="controls-row multi-controls">
+            <label class="control-group" for="pattern-profile-select">
+              <span>Patrón</span>
+              <select id="pattern-profile-select">
+                <option value="balanced">Patrón equilibrado con tendencia saludable</option>
+                <option value="mixed">Patrón mixto</option>
+                <option value="unhealthy">Patrón con tendencia poco saludable</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="card-heading">
+            <div>
+              <h3>Perfil alimentario del patrón seleccionado</h3>
+              <p>
+                Grupos alimentarios ordenados según el porcentaje de consumo alto dentro del patrón.
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="pattern-profile-chart"
+            class="chart chart-compact"
+            role="img"
+            aria-label="Perfil alimentario del patrón seleccionado"
+          ></div>
+
+          <div id="pattern-profile-reading" class="reading-box" aria-live="polite"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="desigualdades" class="section-pad">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">02 · Distribución social y territorial</p>
+
+          <h2>Desigualdades sociales</h2>
+
+          <p>
+            Explora la distribución porcentual de patrones alimentarios dentro de cada categoría
+            social o territorial. Las barras apiladas suman 100 % por categoría.
+          </p>
+        </div>
+
+        <article class="chart-card wide-card">
+          <div class="controls-row">
+            <label class="control-group" for="social-variable-select">
+              <span>Variable</span>
+              <select id="social-variable-select">
+                <option value="sexo">Sexo</option>
+                <option value="educacion">Nivel educativo</option>
+                <option value="economia">Situación económica del hogar</option>
+                <option value="ocupacion">Posición ocupacional agrupada</option>
+                <option value="provincia">Provincia</option>
+              </select>
+            </label>
+
+            <span class="data-badge" id="social-source-badge">Fallback</span>
+          </div>
+
+          <div
+            id="social-distribution-chart"
+            class="chart chart-tall"
+            role="img"
+            aria-label="Distribución social y territorial de patrones alimentarios"
+          ></div>
+
+          <div id="social-metrics" class="social-metrics" aria-label="Indicadores sintéticos de desigualdad">
+            <article>
+              <span>Mayor patrón poco saludable</span>
+              <strong id="social-max-unhealthy-value">—</strong>
+              <small id="social-max-unhealthy-category">—</small>
+            </article>
+
+            <article>
+              <span>Menor patrón poco saludable</span>
+              <strong id="social-min-unhealthy-value">—</strong>
+              <small id="social-min-unhealthy-category">—</small>
+            </article>
+
+            <article>
+              <span>Brecha máxima</span>
+              <strong id="social-gap-value">—</strong>
+              <small>puntos porcentuales</small>
+            </article>
+
+            <article>
+              <span>Mayor patrón equilibrado</span>
+              <strong id="social-max-balanced-value">—</strong>
+              <small id="social-max-balanced-category">—</small>
+            </article>
+          </div>
+
+          <div id="social-reading" class="reading-box" aria-live="polite"></div>
+        </article>
+
+        <div class="grid-two mt-xl align-start">
+          <article class="chart-card">
+            <div class="card-heading">
+              <div>
+                <h3>Ranking provincial del patrón poco saludable</h3>
+                <p>
+                  Provincias ordenadas por presencia relativa del patrón con tendencia poco
+                  saludable.
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="province-ranking-chart"
+              class="chart chart-compact"
+              role="img"
+              aria-label="Ranking provincial del patrón con tendencia poco saludable"
+            ></div>
+          </article>
+
+          <aside class="summary-panel" aria-label="Resumen por dimensión social">
+            <h3>Resumen interpretativo por dimensión</h3>
+
+            <div class="summary-list">
+              <p><strong>Sexo:</strong> diferencias pequeñas.</p>
+              <p><strong>Educación:</strong> ausencia de gradiente lineal simple.</p>
+              <p>
+                <strong>Situación económica:</strong> mayor patrón poco saludable en categorías
+                de menor ventaja.
+              </p>
+              <p>
+                <strong>Ocupación:</strong> mayor presencia relativa en posiciones intermedias
+                y manuales.
+              </p>
+              <p>
+                <strong>Provincia:</strong> Cádiz y Sevilla destacan por mayor presencia relativa
+                del patrón poco saludable; Jaén y Granada por el patrón equilibrado.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="modelos" class="section-pad section-soft">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">03 · Asociación estadística</p>
+
+          <h2>Modelos de Poisson robustos</h2>
+
+          <p>
+            Se estimaron modelos independientes por dimensión socioeconómica, ajustados por sexo.
+            El patrón equilibrado con tendencia saludable se utilizó como categoría de referencia.
+            Los resultados se presentan como razones de prevalencia.
+          </p>
+        </div>
+
+        <div class="rp-guide" aria-label="Cómo leer las razones de prevalencia">
+          <article>
+            <strong>RP = 1</strong>
+            <span>No hay diferencia relativa respecto a la categoría de referencia.</span>
+          </article>
+
+          <article>
+            <strong>RP &gt; 1</strong>
+            <span>Mayor prevalencia relativa del patrón analizado.</span>
+          </article>
+
+          <article>
+            <strong>IC95 %</strong>
+            <span>Si el intervalo cruza 1, la asociación es menos concluyente.</span>
+          </article>
+
+          <article>
+            <strong>p &lt; 0,05</strong>
+            <span>Asociación estadísticamente significativa bajo el criterio convencional.</span>
+          </article>
+        </div>
+
+        <article class="chart-card wide-card">
+          <div class="controls-row multi-controls">
+            <label class="control-group" for="comparison-select">
+              <span>Comparación</span>
+              <select id="comparison-select">
+                <option value="mixto">Patrón mixto vs equilibrado</option>
+                <option value="poco_saludable">
+                  Patrón con tendencia poco saludable vs equilibrado
+                </option>
+              </select>
+            </label>
+
+            <label class="control-group" for="model-select">
+              <span>Modelo</span>
+              <select id="model-select">
+                <option value="educacion">Educación</option>
+                <option value="ocupacion">Ocupación</option>
+                <option value="economia">Situación económica</option>
+              </select>
+            </label>
+
+            <span class="data-badge" id="model-source-badge">Fallback</span>
+          </div>
+
+          <div
+            id="model-forest-plot"
+            class="chart chart-compact forest-chart"
+            role="img"
+            aria-label="Forest plot de razones de prevalencia e intervalos de confianza"
+          ></div>
+
+          <div class="table-wrap" tabindex="0" aria-label="Tabla de modelos de Poisson robustos">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th>Categoría</th>
+                  <th>Referencia</th>
+                  <th>RP</th>
+                  <th>IC95 %</th>
+                  <th>p</th>
+                </tr>
+              </thead>
+
+              <tbody id="model-results-body"></tbody>
+            </table>
+          </div>
+
+          <div class="model-summary">
+            <h3>Lectura sintética</h3>
+            <p id="model-summary-text">
+              Selecciona una comparación y un modelo para consultar una lectura interpretativa de las razones de prevalencia.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="metodologia" class="section-pad">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">04 · Diseño analítico</p>
+
+          <h2>Metodología</h2>
+
+          <p>
+            El análisis se plantea como una caracterización empírica de patrones alimentarios y su
+            asociación con dimensiones de posición social. No equivale a un índice clínico de
+            calidad dietética.
+          </p>
+        </div>
+
+        <ol class="timeline" aria-label="Pasos metodológicos">
+          <li>
+            <span>1</span>
+            <div>
+              <h3>Selección de población adulta</h3>
+              <p>Restricción de la muestra analítica a población adulta de la EAS 2016.</p>
+            </div>
+          </li>
+
+          <li>
+            <span>2</span>
+            <div>
+              <h3>Recodificación alimentaria</h3>
+              <p>
+                Transformación de las variables alimentarias en niveles bajo, intermedio y alto
+                cuando fue metodológicamente viable.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <span>3</span>
+            <div>
+              <h3>Matriz de 12 grupos</h3>
+              <p>
+                Construcción de una matriz alimentaria con cereales, lácteos, huevos, comida rápida,
+                dulces, fruta, verduras, legumbres, pescado, bebidas azucaradas, carne y
+                embutidos/fiambres.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <span>4</span>
+            <div>
+              <h3>PCA como apoyo exploratorio</h3>
+              <p>
+                Uso del PCA ponderado para explorar estructura latente, sin emplearlo como método
+                final de clasificación.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <span>5</span>
+            <div>
+              <h3>KMeans sobre los 12 grupos</h3>
+              <p>
+                Identificación empírica de tres patrones alimentarios finales a partir de la matriz
+                completa.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <span>6</span>
+            <div>
+              <h3>Caracterización de patrones</h3>
+              <p>Descripción del consumo alto por grupo alimentario y patrón.</p>
+            </div>
+          </li>
+
+          <li>
+            <span>7</span>
+            <div>
+              <h3>Asociación social</h3>
+              <p>
+                Estimación de modelos de Poisson robustos independientes por dimensión
+                socioeconómica, ajustados por sexo y con pesos muestrales normalizados.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="warning-grid">
+          <article>
+            <h3>Patrones empíricos</h3>
+            <p>No son índices clínicos de calidad dietética ni diagnósticos nutricionales.</p>
+          </article>
+
+          <article>
+            <h3>Frecuencia declarada</h3>
+            <p>
+              La EAS recoge frecuencia de consumo declarada, no cantidades exactas ni nutrientes.
+            </p>
+          </article>
+
+          <article>
+            <h3>Análisis transversal</h3>
+            <p>
+              Los resultados describen asociaciones observadas en 2016 y no deben interpretarse
+              causalmente.
+            </p>
+          </article>
+        </div>
+
+        <aside class="limitations-panel" aria-label="Limitaciones de interpretación">
+          <h3>Limitaciones de interpretación</h3>
+          <p>
+            Los resultados describen asociaciones en una encuesta transversal. No deben leerse como
+            efectos causales ni como evaluación clínica individual. La clasificación de patrones
+            depende de las variables alimentarias disponibles, de su recodificación y de la
+            estructura empírica observada en la EAS 2016.
+          </p>
+        </aside>
+      </div>
+    </section>
+    <section id="conclusiones" class="section-pad conclusions-section">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">05 · Síntesis final</p>
+
+          <h2>Conclusiones principales</h2>
+
+          <p>
+            Los resultados permiten sintetizar la estructura observada de los patrones alimentarios y su relación con distintas dimensiones sociales. La lectura debe entenderse como descriptiva y exploratoria, sin atribuir causalidad.
+          </p>
+        </div>
+
+        <div class="conclusion-grid">
+          <article class="conclusion-card main-conclusion">
+            <span class="conclusion-tag">Resultado central</span>
+            <h3>El patrón con tendencia poco saludable es el más frecuente</h3>
+            <p>
+              En la muestra adulta analizada, este patrón concentra la mayor proporción relativa. Su caracterización combina mayor presencia de dulces, bebidas azucaradas, comida rápida, carne y embutidos/fiambres.
+            </p>
+          </article>
+
+          <article class="conclusion-card">
+            <span class="conclusion-tag">Distribución social</span>
+            <h3>Las diferencias por sexo son reducidas</h3>
+            <p>
+              La comparación entre hombres y mujeres no concentra la explicación principal de las desigualdades observadas en los patrones alimentarios.
+            </p>
+          </article>
+
+          <article class="conclusion-card">
+            <span class="conclusion-tag">Asociación socioeconómica</span>
+            <h3>Economía y ocupación muestran asociaciones más consistentes</h3>
+            <p>
+              La situación económica del hogar y la posición ocupacional presentan una lectura más clara en los modelos de Poisson robustos, especialmente para el patrón con tendencia poco saludable.
+            </p>
+          </article>
+
+          <article class="conclusion-card">
+            <span class="conclusion-tag">Educación</span>
+            <h3>El nivel educativo no muestra un gradiente simple</h3>
+            <p>
+              Los resultados por educación no deben interpretarse como una relación lineal directa. La lectura exige cautela y comparación con el resto de dimensiones sociales.
+            </p>
+          </article>
+
+          <article class="conclusion-card caution-conclusion">
+            <span class="conclusion-tag">Cautela metodológica</span>
+            <h3>Los resultados describen asociaciones, no efectos causales</h3>
+            <p>
+              La EAS 2016 recoge frecuencia declarada de consumo, no cantidades ni nutrientes. Además, el diseño transversal impide establecer relaciones causales entre posición social y alimentación.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section id="datos" class="section-pad section-soft">
+      <div class="shell">
+        <div class="section-header">
+          <p class="eyebrow">06 · Reproducibilidad</p>
+
+          <h2>Datos utilizados por la web</h2>
+
+          <p>
+            Los enlaces descargan los CSV normalizados que alimentan directamente los gráficos y
+            tablas de esta página. Si se actualizan los análisis, basta con sustituir estos archivos
+            en la carpeta <code>data/</code>.
+          </p>
+        </div>
+
+        <div class="download-grid" aria-label="Descarga de datos de la visualización">
+          <a class="download-card" href="data/distribucion_patrones.csv" download>
+            <strong>Distribución de patrones</strong>
+            <span>Porcentaje de población adulta en cada patrón.</span>
+          </a>
+
+          <a class="download-card" href="data/caracterizacion_consumo_alto_patron.csv" download>
+            <strong>Consumo alto por patrón</strong>
+            <span>Porcentaje de consumo alto por grupo alimentario y patrón.</span>
+          </a>
+
+          <a class="download-card" href="data/distribucion_patrones_sociales.csv" download>
+            <strong>Distribución social</strong>
+            <span>
+              Patrones alimentarios por sexo, educación, economía, ocupación y provincia.
+            </span>
+          </a>
+
+          <a
+            class="download-card"
+            href="data/29_02_modelos_poisson_independientes_posicion_social_12_grupos_2016_memoria.csv"
+            download
+          >
+            <strong>Modelos Poisson robustos</strong>
+            <span>RP, IC95 % y valores p de los modelos independientes.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <p>Trabajo Final de Máster — Encuesta Andaluza de Salud 2016.</p>
+      <a href="#inicio">Volver arriba</a>
+    </div>
+  </footer>
+</body>
+</html>
